@@ -37,8 +37,13 @@ def update_profile_picture(request, author_id):
     try:
         author = Author.objects.get(id=author_id)
     except Author.DoesNotExist:
-        return Response({"error": "author not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Author not found"}, status=status.HTTP_404_NOT_FOUND)
 
+    # Validar si el campo 'profile_picture' está en los datos de la solicitud
+    if 'profile_picture' not in request.data:
+        return Response({"error": "'profile_picture' field is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Actualizar solo el campo de 'profile_picture'
     serializer = AuthorSerializer(author, data=request.data, partial=True)
 
     if serializer.is_valid():
@@ -50,13 +55,12 @@ def update_profile_picture(request, author_id):
 @api_view(["GET"])
 def get_author_by_username(request, username):
     try:
-        author = Author.objects.get_or_create(name=username)
+        # Busca al autor con el nombre proporcionado
+        author = Author.objects.get(name=username)
     except Author.DoesNotExist:
-        return Response({"error": "author not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Author not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    serializer = AuthorSerializer(author,data=request.data, partial=True)
+    # Serializa los datos del autor
+    serializer = AuthorSerializer(author)
 
-    if serializer.is_valid():
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(serializer.data, status=status.HTTP_200_OK)
