@@ -32,7 +32,7 @@ def create_message(request):
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(["PUT"])
+@api_view(["POST"])
 def update_profile_picture(request, author_id):
     try:
         author = Author.objects.get(id=author_id)
