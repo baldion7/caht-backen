@@ -102,11 +102,12 @@ def delete_message(request, message_id):
 
 @api_view(["PUT"])
 def update_profile_picture(request, author_id):
+    # Intentar obtener el autor o crearlo si no existe
+    author, created = Author.objects.get_or_create(id=author_id)
 
-    try:
-        author = Author.objects.get(id=author_id)
-    except Author.DoesNotExist:
-        return Response({"error": "Author not found"}, status=status.HTTP_404_NOT_FOUND)
+    if created:
+        author.name = f"Autor_{author_id}"  # Nombre por defecto, puede ser ajustado
+        author.save()
 
     # Verificar si hay datos en el request
     if not request.data:
