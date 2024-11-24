@@ -134,7 +134,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'https://chat-seven-lemon.vercel.app',  # Reemplaza con tu dominio de React en Vercel
+    'https://chat-seven-lemon.vercel.app',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+
 ]
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
@@ -150,5 +153,5 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
